@@ -134,7 +134,31 @@ spec:
             - name: {{ $key }}
               value: {{ $val | quote }}
             {{- end }}
-
+            {{- if .Values.keycloakOauth.enabled }}
+            - name: KEYCLOAK_ID
+              value: {{ .Values.keycloakOauth.id }}
+            - name: KEYCLOAK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.keycloakOauth.existingSecret }}
+                  key: {{ .Values.keycloakOauth.existingSecretKey }}
+            - name: KEYCLOAK_URL
+              value: {{ .Values.keycloakOauth.url }}
+            - name: KEYCLOAK_REALM
+              value: {{ .Values.keycloakOauth.realm }}
+            {{- if .Values.keycloakOauth.autologin }}
+            - name: KEYCLOAK_AUTOLOGIN
+              value: "true"
+            {{- end}}
+            {{- if .Values.keycloakOauth.autocreateuser }}
+            - name: KEYCLOAK_AUTOCREATEUSER
+              value: "true" 
+            {{- end}}
+            {{- end }}
+            {{- if .Values.runInSubdir.enabled }}
+            - name: RAILS_RELATIVE_URL_ROOT
+              value: {{ .Values.runInSubdir.dir }}
+            {{- end }}
           ports:
             - name: gallery
               containerPort: 3000

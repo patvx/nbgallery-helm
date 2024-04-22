@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: nbgallery/nbgallery
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
@@ -16,10 +16,10 @@ fullnameOverride: ""
 secretKey: ""
 
 email:
-  domain:
-  address:
-  server:
-  port:
+  domain: gmail.com
+  address: nobody@gmail.com
+  server: nothing.gmail.com
+  port: 1234
 extraEnv: {}
   ## Example
   # MY_VAR: "myvalue"
@@ -60,6 +60,26 @@ facebookOauth:
   id:
   existingSecret:
   existingSecretKey:
+
+# build & load into minikuve keycloak custom image (in nbgallery repo):
+# docker build -t nbgallery/nbgallery .
+# docker image save nbgallery/nbgallery -o image.tar 
+# minikube image load image.tar
+keycloakOauth:
+  enabled: true
+  id: nbgallery
+  existingSecret: keycloak-nbgallery-oauth
+  existingSecretKey: clientsecret
+  url: 
+  realm: 
+# these 2 need to be strings  
+  autologin: "true"
+  autocreateuser: "true"
+
+# run nbgallery in subdirectory
+runInSubdir:
+  enabled: true
+  dir: /nbgallery
 
 mysql:
   host: nbgallery-mysql
