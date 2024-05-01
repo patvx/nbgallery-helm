@@ -67,14 +67,17 @@ facebookOauth:
 # minikube image load image.tar
 keycloakOauth:
   enabled: true
-  id: nbgallery
-  existingSecret: keycloak-nbgallery-oauth
-  existingSecretKey: clientsecret
+  id: ag-ui
+ #existingSecret: 
+ #existingSecretKey: 
   url: 
-  realm: 
+  realm: ag
 # these 2 need to be strings  
   autologin: "true"
   autocreateuser: "true"
+# to autofill the jupyter environment
+  jupyterhuburl: 
+  jupyterhubname: 
 
 # run nbgallery in subdirectory
 runInSubdir:

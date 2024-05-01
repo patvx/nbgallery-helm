@@ -137,11 +137,13 @@ spec:
             {{- if .Values.keycloakOauth.enabled }}
             - name: KEYCLOAK_ID
               value: {{ .Values.keycloakOauth.id }}
+            {{- if .Values.keycloakOauth.existingSecret }}
             - name: KEYCLOAK_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.keycloakOauth.existingSecret }}
                   key: {{ .Values.keycloakOauth.existingSecretKey }}
+            {{- end}}
             - name: KEYCLOAK_URL
               value: {{ .Values.keycloakOauth.url }}
             - name: KEYCLOAK_REALM
@@ -159,6 +161,12 @@ spec:
             - name: RAILS_RELATIVE_URL_ROOT
               value: {{ .Values.runInSubdir.dir }}
             {{- end }}
+            {{- if .Values.keycloakOauth.jupyterhuburl }}
+            - name: JUPYTERHUB_URL
+              value: {{ .Values.keycloakOauth.jupyterhuburl }}}}
+            - name: JUPYTERHUB_NAME
+              value: {{ .Values.keycloakOauth.jupyterhubname }}}}
+            {{- end}}
           ports:
             - name: gallery
               containerPort: 3000
